@@ -6,8 +6,11 @@ use App\Lib\ResultCode;
 use App\Lib\Utils;
 use App\Lib\ValidateRules;
 use App\Models\Users;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsersController extends Controller
 {
@@ -48,11 +51,39 @@ class UsersController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password')
         ];
-        if (!Auth::attempt($credentials)) {
-            return Utils::resultForResponse(ResultCode::ERROR, null, 'wrong account');
-        }
+        try {
+            $token = JWTAuth::attempt($credentials, [
+                'exp' => Carbon::now()->addWeek()->timestamp,
+            ]);
 
-        return Utils::resultForResponse(ResultCode::SUCCESS, Auth::user());
+            if (!$token) {
+                return Utils::resultForResponse(ResultCode::ERROR, null, 'Could not authenticate');
+            } else {
+                $data = [];
+                $meta = [];
+                $data['name'] = $request->user()->name;
+                $meta['token'] = $token;
+                return Utils::resultForResponse(ResultCode::SUCCESS, ['data' => $data, 'meta' => $meta]);
+            }
+        } catch (JWTException $e) {
+            return Utils::resultForResponse(ResultCode::ERROR, null, 'Could not authenticate');
+        }
     }
 
+    public function detail(Request $request)
+    {
+        $rules = [];
+        $rules = ValidateRules::addRule($rules, 'users.id', true);
+        $validator = ValidateRules::validateParams($request->all(), $rules);
+        if (!$validator['isValid']) {
+            return Utils::resultForResponse(ResultCode::ERROR, null, $validator['Response']);
+        }
+
+        $user = Users::where('id', $request->input('id'))->get();
+        if ($user->isEmpty()) {
+            return Utils::resultForResponse(ResultCode::ERROR, null, 'not found');
+        }
+
+        return Utils::resultForResponse(ResultCode::SUCCESS, $user[0]);
+    }
 }

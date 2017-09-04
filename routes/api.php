@@ -20,4 +20,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'user'], function() {
     Route::post('/register', 'UsersController@register');
     Route::post('/login', 'UsersController@login');
+    Route::post('/detail', 'UsersController@detail');
+
+    Route::group(['middleware' => 'jwt.auth'], function() {
+
+    });
+});
+
+Route::group(['prefix' => 'message'], function() {
+    Route::post('/send', 'MessagesController@send');
+    Route::group(['middleware' => 'jwt.auth'], function() {
+        Route::post('/', 'MessagesController@index');
+    });
 });

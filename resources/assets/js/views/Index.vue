@@ -26,7 +26,7 @@
         <br>
         <div class="row">
             <div class="col-xs-12">
-                <router-link to="/login">Login to your account</router-link> or <router-link to="/new_message">Send a anonymous message</router-link>
+                <router-link to="/login">Login to your account</router-link> or <router-link to="/new-message">Send a anonymous message</router-link>
             </div>
         </div>
     </div>

@@ -13,10 +13,11 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('message', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned();
             $table->longText('content');
-            $table->tinyInteger('favorited')->unsigned()->default(0);
+            $table->string('favorited', 1)->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

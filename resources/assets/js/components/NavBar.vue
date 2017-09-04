@@ -13,8 +13,9 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><router-link to="/register">Register</router-link></li>
-                    <li><router-link to="/login">Login</router-link></li>
+                    <li v-if="!auth"><router-link to="/register">Register</router-link></li>
+                    <li v-if="!auth"><router-link to="/login">Login</router-link></li>
+                    <li v-if="auth"><a @click.stop="logout">Logout</a></li>
                     <li><a href="">About</a></li>
                     <li><a href="https://m.me/manhtuan1412" target="_blank">Contact</a></li>
                 </ul>
@@ -22,3 +23,40 @@
         </div>
     </nav>
 </template>
+
+<script>
+    import Auth from '../store/auth';
+
+    export default {
+        created() {
+            Auth.initialize();
+        },
+        data() {
+            return {
+                authState: Auth.state
+            }
+        },
+        computed: {
+            auth() {
+                if (this.authState.api_token) {
+                    return true;
+                }
+
+                return false;
+            }
+        },
+        methods: {
+            logout() {
+                post('/api/user/logout')
+                    .then((res) => {
+                        if(res.data.result_code === '0') {
+                            // remove token
+                            Auth.remove();
+                            Flash.setSuccess('You have successfully logged out.');
+                            this.$router.push('/');
+                        }
+                    })
+            }
+        }
+    }
+</script>

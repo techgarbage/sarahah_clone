@@ -54,9 +54,9 @@
                     .then((res) => {
                         console.log(res);
                         if (res.data.result_code === '0') {
-                            Auth.set('123456', res.data.id);
+                            Auth.set(res.data.result_detail.meta.token);
                             Flash.setSuccess('You have successfully logged in.');
-                            this.$router.push('/');
+                            this.$router.push('/messages');
                         }
                         if(res.data.result_code === '9') {
                             Flash.setError('Error');

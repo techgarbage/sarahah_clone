@@ -18,9 +18,16 @@ class ValidateRules
 
         // users table
         'users' => [
+            'id' => ['max:11', 'exists:users'],
             'name' => ['string', 'min:2'],
             'email' => ['email'],
             'password' => ['string', 'min:6', 'max:20']
+        ],
+
+        'messages' => [
+            'user_id' => ['max:11', 'exists:users,id'],
+            'content' => ['string', 'min:2'],
+            'favorited' => ['string', 'size:1']
         ],
 
         'common' => [

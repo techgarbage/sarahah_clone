@@ -5,8 +5,9 @@ import VueRouter from 'vue-router'
 import Index from '../views/Index.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
-import Message from '../views/Message.vue';
+import Messages from '../views/Messages.vue';
 import NewMessage from '../views/NewMessage.vue';
+import ThankYou from '../views/ThankYou.vue';
 
 Vue.use(VueRouter);
 
@@ -26,12 +27,16 @@ const router = new VueRouter({
             component: Register
         },
         {
-            path: '/messages',
-            component: Message
+            path: '/messages/:user_id',
+            component: Messages
         },
         {
-            path: '/new_message',
+            path: '/new-message/:user_id',
             component: NewMessage
+        },
+        {
+            path: '/thank-you',
+            component: ThankYou
         }
     ]
 });
