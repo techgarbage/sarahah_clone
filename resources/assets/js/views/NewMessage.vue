@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="width: 800px;">
+    <div class="container-fluid" style="width: 800px;">
         <div class="row">
             <div class="col-xs-12">
                 <div class="panel panel-default">

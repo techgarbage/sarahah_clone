@@ -15,7 +15,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li v-if="!auth"><router-link to="/register">Register</router-link></li>
                     <li v-if="!auth"><router-link to="/login">Login</router-link></li>
-                    <li v-if="auth"><a @click.stop="logout">Logout</a></li>
+                    <li v-if="auth"><a @click.stop="logout" style="cursor: pointer;">Logout</a></li>
                     <li><a href="">About</a></li>
                     <li><a href="https://m.me/manhtuan1412" target="_blank">Contact</a></li>
                 </ul>
@@ -27,13 +27,20 @@
 <script>
     import Auth from '../store/auth';
 
+    import { post } from '../helpers/api';
+
+    import Flash from '../helpers/flash';
+
     export default {
         created() {
             Auth.initialize();
         },
         data() {
             return {
-                authState: Auth.state
+                authState: Auth.state,
+                params: {
+                    token: Auth.state.api_token
+                }
             }
         },
         computed: {
@@ -47,14 +54,18 @@
         },
         methods: {
             logout() {
-                post('/api/user/logout')
+                post('/api/user/logout', this.params)
                     .then((res) => {
+                        console.log(res);
                         if(res.data.result_code === '0') {
                             // remove token
                             Auth.remove();
                             Flash.setSuccess('You have successfully logged out.');
                             this.$router.push('/');
                         }
+                    })
+                    .catch((err) => {
+                        console.log(err);
                     })
             }
         }

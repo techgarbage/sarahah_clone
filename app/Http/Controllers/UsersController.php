@@ -62,12 +62,23 @@ class UsersController extends Controller
                 $data = [];
                 $meta = [];
                 $data['name'] = $request->user()->name;
+                $data['user_id'] = $request->user()->id;
                 $meta['token'] = $token;
                 return Utils::resultForResponse(ResultCode::SUCCESS, ['data' => $data, 'meta' => $meta]);
             }
         } catch (JWTException $e) {
             return Utils::resultForResponse(ResultCode::ERROR, null, 'Could not authenticate');
         }
+    }
+
+    public function isLogin(Request $request)
+    {
+        if (!$user = JWTAuth::toUser($request->input('token'))) {
+            return Utils::resultForResponse(ResultCode::ERROR_AUTHENTICATE, [], 'Could not authenticate');
+        }
+
+        // the token is valid and we have found the user via the sub claim
+        return Utils::resultForResponse(ResultCode::SUCCESS, compact('user'));
     }
 
     public function detail(Request $request)
@@ -85,5 +96,16 @@ class UsersController extends Controller
         }
 
         return Utils::resultForResponse(ResultCode::SUCCESS, $user[0]);
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+            JWTAuth::invalidate($request->input('token'));
+            return Utils::resultForResponse(ResultCode::SUCCESS, []);
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return Utils::resultForResponse(ResultCode::ERROR, null, 'Failed to logout, please try again.');
+        }
     }
 }

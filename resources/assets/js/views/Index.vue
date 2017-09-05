@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12">
                 <div class="alert alert-info">
@@ -26,7 +26,7 @@
         <br>
         <div class="row">
             <div class="col-xs-12">
-                <router-link to="/login">Login to your account</router-link> or <router-link to="/new-message">Send a anonymous message</router-link>
+                <router-link to="/login">Login to your account</router-link> or <router-link to="/register">Register an account to join with us</router-link>
             </div>
         </div>
     </div>

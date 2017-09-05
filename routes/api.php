@@ -13,23 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['prefix' => 'user'], function() {
     Route::post('/register', 'UsersController@register');
     Route::post('/login', 'UsersController@login');
     Route::post('/detail', 'UsersController@detail');
 
-    Route::group(['middleware' => 'jwt.auth'], function() {
-
+    Route::group(['middleware' => 'authenticate'], function() {
+        Route::post('/authenticate', 'UsersController@isLogin');
+        Route::post('/logout', 'UsersController@logout');
     });
 });
 
 Route::group(['prefix' => 'message'], function() {
     Route::post('/send', 'MessagesController@send');
-    Route::group(['middleware' => 'jwt.auth'], function() {
+    Route::group(['middleware' => 'authenticate'], function() {
         Route::post('/', 'MessagesController@index');
     });
 });

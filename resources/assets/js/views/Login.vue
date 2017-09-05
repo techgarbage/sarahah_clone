@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="width: 600px;">
+    <div class="container-fluid" style="width: 600px;">
         <div class="row">
             <div class="col-xs-12">
                 <div class="panel panel-primary">
@@ -56,7 +56,7 @@
                         if (res.data.result_code === '0') {
                             Auth.set(res.data.result_detail.meta.token);
                             Flash.setSuccess('You have successfully logged in.');
-                            this.$router.push('/messages');
+                            this.$router.push('/messages/' + res.data.result_detail.data.user_id);
                         }
                         if(res.data.result_code === '9') {
                             Flash.setError('Error');
