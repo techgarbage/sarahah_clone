@@ -44,8 +44,8 @@
         created() {
             post('/api/user/authenticate', this.params)
                 .then((res) => {
-                    console.log(res);
-                    if (res.data.result_code === '0') {
+                    // check authenticate and if route not path /new-message/*
+                    if (res.data.result_code === '0' || this.$route.path !== '/new-message/*') {
                         this.$router.push('/messages/' + res.data.result_detail.user.id)
                     }
                     if (res.data.result_code === '8') {

@@ -42,7 +42,6 @@
         created() {
             post('/api/user/detail', this.params)
                 .then((res) => {
-                    console.log(res);
                     this.user = res.data.result_detail;
                 })
         },
@@ -52,7 +51,6 @@
                 this.error = {};
                 post('/api/message/send', this.form)
                     .then((res) => {
-                        console.log(res);
                         this.isProcessing = false;
                         this.$router.push('/thank-you');
                     })

@@ -38,10 +38,9 @@
                         <ul class="media-list" id="messages" v-for="message in messages">
                             <li class="media" id="message">
                                 <div class="media-left">
-                                    <img class="media-object" src="../../../../public/images/message.png" alt="message" width="64" height="64">
+                                    <img class="media-object" src="../../../../public/img/message.png" alt="message" width="64" height="64">
                                 </div>
                                 <div class="media-body">
-                                    <button type="button" class="close" aria-label="Delete" :data-id="message.id"><span aria-hidden="true">&times;</span></button>
                                     <button type="button" class="close" aria-label="Delete" :data-id="message.id"><span aria-hidden="true">&times;</span></button>
                                     <blockquote>
                                         <p class="message-content">{{ message.content }}</p>
@@ -65,6 +64,8 @@
 
     import SocialSharing from 'vue-social-sharing';
 
+    import moment from 'moment';
+
     export default {
         created() {
             Auth.initialize();
@@ -81,9 +82,10 @@
         created() {
             post('/api/message/', this.params)
                 .then((res) => {
-                    console.log(res);
+                    res.data.result_detail.map(function (value, key) {
+                        value.created_at = moment(value.created_at).fromNow();
+                    });
                     this.messages = res.data.result_detail;
-                    console.log(this.messages);
                 })
                 .catch((err) => {
                     console.log(err);

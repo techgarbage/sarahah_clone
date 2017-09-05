@@ -64,7 +64,6 @@
                 this.error = {};
                 post('/api/user/register', this.form)
                     .then((res) => {
-                        console.log(res);
                         if(res.data.result_code === '0') {
                             Flash.setSuccess('Congratulations! You have now successfully registered.');
                             this.$router.push('/login');

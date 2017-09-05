@@ -56,7 +56,6 @@
             logout() {
                 post('/api/user/logout', this.params)
                     .then((res) => {
-                        console.log(res);
                         if(res.data.result_code === '0') {
                             // remove token
                             Auth.remove();

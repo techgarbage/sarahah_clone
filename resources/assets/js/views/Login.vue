@@ -52,7 +52,6 @@
                 this.error = {};
                 post('/api/user/login ', this.form)
                     .then((res) => {
-                        console.log(res);
                         if (res.data.result_code === '0') {
                             Auth.set(res.data.result_detail.meta.token);
                             Flash.setSuccess('You have successfully logged in.');
