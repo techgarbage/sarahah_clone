@@ -9,6 +9,9 @@ export default {
 		localStorage.setItem('api_token', api_token);
 		this.initialize();
 	},
+	get() {
+        return localStorage.getItem('api_token');
+	},
 	remove() {
 		localStorage.removeItem('api_token');
 		this.initialize();

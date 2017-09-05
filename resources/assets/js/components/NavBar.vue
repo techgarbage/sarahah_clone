@@ -39,7 +39,7 @@
             return {
                 authState: Auth.state,
                 params: {
-                    token: Auth.state.api_token
+                    token: Auth.get()
                 }
             }
         },

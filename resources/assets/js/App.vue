@@ -27,11 +27,14 @@
     import Auth from './store/auth';
 
     export default {
+        created() {
+            Auth.initialize();
+        },
         data() {
             return {
                 flash: Flash.state,
                 params: {
-                    token: Auth.initialize()
+                    token: Auth.get()
                 }
             }
         },
@@ -44,6 +47,9 @@
                     console.log(res);
                     if (res.data.result_code === '0') {
                         this.$router.push('/messages/' + res.data.result_detail.user.id)
+                    }
+                    if (res.data.result_code === '8') {
+                        this.$router.push('/');
                     }
                 })
                 .catch((err) => {
