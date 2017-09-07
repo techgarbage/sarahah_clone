@@ -1,9 +1,13 @@
-import axios from 'axios'
-import Auth from '../store/auth'
+import axios from 'axios';
+
+import Auth from '../store/auth';
+
+const BASE_URL = window.location.origin;
+
 export function get(url) {
     return axios({
     	method: 'GET',
-    	url: url,
+    	url: BASE_URL + url,
     	headers: {
     		'Authorization': `Bearer ${Auth.state.api_token}`
     	}
@@ -13,7 +17,7 @@ export function get(url) {
 export function post(url, payload) {
     return axios({
     	method: 'POST',
-    	url: url,
+    	url: BASE_URL + url,
     	data: payload,
     	headers: {
     		'Authorization': `Bearer ${Auth.state.api_token}`
@@ -24,7 +28,7 @@ export function post(url, payload) {
 export function del(url) {
     return axios({
         method: 'DELETE',
-        url: url,
+        url: BASE_URL + url,
         headers: {
             'Authorization': `Bearer ${Auth.state.api_token}`
         }
